@@ -72,22 +72,22 @@ cleanWhy = function(whyData, cb) {
 
 		// If not, let's see if we can turn what we have into a question.
 		// How do we test for emoticons? Keep this logic?
-		} else {
+		// } else {
 
-			// If there are no periods or exclamations in the tweet
-			// let's turn it into a question.
-			if ((periodExclamationPattern.test(currentTweet)) == false) {
+		// 	// If there are no periods or exclamations in the tweet
+		// 	// let's turn it into a question.
+		// 	if ((periodExclamationPattern.test(currentTweet)) == false) {
 
-				// Check if last char is a space. If so, remove it.
-				if (currentTweet.charAt(currentTweet.length-1) == ' ') {
-					currentTweet = currentTweet.substring(0, currentTweet.length - 1);
-				}
+		// 		// Check if last char is a space. If so, remove it.
+		// 		if (currentTweet.charAt(currentTweet.length-1) == ' ') {
+		// 			currentTweet = currentTweet.substring(0, currentTweet.length - 1);
+		// 		}
 
-				// Check if last char is an actual character. If so, keep it and add a ?
-				if ((lastCharPattern.test(currentTweet))) {
-					question = currentTweet + "?";
-				}
-			}
+		// 		// Check if last char is an actual character. If so, keep it and add a ?
+		// 		if ((lastCharPattern.test(currentTweet))) {
+		// 			question = currentTweet + "?";
+		// 		}
+		// 	}
 		}
 
 		if ((question.length > 0) && (question.length <= 70)) {
@@ -181,6 +181,10 @@ formatQA = function(whyData, becauseData, cb) {
 
 	var QA = question + " " + answer;
 
+    t.post('statuses/update', {status: QA}, function(err, data, response) {
+		cb(err, QA);
+    });
+
 	// Display Tweet
 	console.log('End of Line');
 	console.log(whyData.parsedQuestions);
@@ -198,7 +202,7 @@ run = function() {
 		cleanWhy,
 		getPublicTweetBecause,
 		cleanBecause,
-		formatQA
+		formatQA,
     ],
     function(err, whyData, becauseData, cb) {
 		if (err) {
