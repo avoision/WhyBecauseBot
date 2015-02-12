@@ -147,6 +147,10 @@ getPublicTweetBecause = function(whyData, cb) {
 cleanBecause = function(whyData, becauseData, cb) {
 	console.log("--Clean Because");
 
+	var letterEndPattern = /[a-zA-Z]+/;
+	var punctuationEndPattern = /[\?\!\.]+/;
+
+
 	for (i = 0; i < becauseData.allPosts.length; i++) {
 		
 		var currentTweet = becauseData.allPosts[i],
@@ -155,8 +159,17 @@ cleanBecause = function(whyData, becauseData, cb) {
 
 		answer = "I" + currentTweet.substring(becausePos + 1);
 
-		if (answer.length < 70) {
-			becauseData.parsedAnswers.push(answer);
+		var lastChar = answer.charAt(answer.length - 1);
+
+		// Check if our answer ends in a letter, or ?!.
+		if ((letterEndPattern.test(lastChar)) || punctuationEndPattern.test(lastChar)) {
+			if (letterEndPattern.test(lastChar)) {
+				answer += ".";
+			}
+	
+			if (answer.length < 70) {
+				becauseData.parsedAnswers.push(answer);
+			}
 		}
 	}
 
@@ -212,4 +225,34 @@ run = function() {
 }
 
 
-run();
+// ===========================
+// Cleanup
+// ===========================
+iReallyReallyWantToDeleteAllTweets = function() {
+	t.get('statuses/user_timeline', {screen_name: 'whybecausebot', count: 10}, function(err, data, response) {
+		if (!err) {
+			var liveTweetsArray = [];
+			
+			for (i = 0; i < data.length; i++) {
+				liveTweetsArray.push(data[i].id_str);
+			}
+
+			for (j = 0; j < liveTweetsArray.length; j++) {
+				t.post('statuses/destroy/' + liveTweetsArray[j], {id: liveTweetsArray[j]}, function(err, data, response) {
+					if (!err) {
+						console.log("Deleted!");
+					}
+				});
+			}
+		}
+	})
+}
+
+setInterval(function() {
+  try {
+    run();
+  }
+  catch (e) {
+    console.log(e);
+  }
+}, 60000 * 30);
