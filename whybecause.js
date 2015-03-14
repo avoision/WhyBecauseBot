@@ -26,8 +26,7 @@ getPublicTweetWhy = function(cb) {
 				var tweet = data.statuses[i].text.toLowerCase(),
 					hasReply = tweet.indexOf('@'), 
 					hasHashtag = tweet.indexOf('#'),
-					hasLink = tweet.indexOf('http'),
-
+					hasLink = tweet.indexOf('http');
 
 				// Does the tweet contain offensive words?
 				if (!wordFilter.blacklisted(tweet)) {
@@ -251,11 +250,14 @@ iReallyReallyWantToDeleteAllTweets = function() {
 	})
 }
 
-setInterval(function() {
-  try {
-    run();
-  }
-  catch (e) {
-    console.log(e);
-  }
-}, 60000 * 30);
+run();
+
+
+// setInterval(function() {
+//   try {
+//     run();
+//   }
+//   catch (e) {
+//     console.log(e);
+//   }
+// }, 60000 * 30);
