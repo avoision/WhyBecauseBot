@@ -27,14 +27,14 @@ getPublicTweetWhy = function(cb) {
 					hasReply = tweet.indexOf('@'), 
 					hasHashtag = tweet.indexOf('#'),
 					hasLink = tweet.indexOf('http'),
-					hasLogical = tweet.indexOf('true love comes with no logical reason');
+
 
 				// Does the tweet contain offensive words?
 				if (!wordFilter.blacklisted(tweet)) {
 					// Does the tweet begin with "Why is... "
 					if (pattern.test(tweet)) {
 						// Does the tweet have a reply, hashtag, or URL?
-						if ((hasReply == -1) && (hasHashtag == -1) && (hasLink == -1) && (hasLogical == -1)) {
+						if ((hasReply == -1) && (hasHashtag == -1) && (hasLink == -1)) {
 							whyData.allPosts.push(data.statuses[i].text);
 						}
 					}
@@ -122,13 +122,15 @@ getPublicTweetBecause = function(whyData, cb) {
 					hasReply = tweet.indexOf('@'), 
 					hasHashtag = tweet.indexOf('#'),
 					hasLink = tweet.indexOf('http');
+					hasLogical = tweet.indexOf('comes with no logical reason');
+					hasStrong = tweet.indexOf('strong for too long');
 
 				// Does the tweet contain offensive words?
 				if (!wordFilter.blacklisted(tweet)) {
 					// Does the tweet begin with "Why is... "
 					if (pattern.test(tweet)) {
 						// Does the tweet have a reply, hashtag, or URL?
-						if ((hasReply == -1) && (hasHashtag == -1) && (hasLink == -1)) {
+						if ((hasReply == -1) && (hasHashtag == -1) && (hasLink == -1) && (hasLogical == -1) && (hasStrong == -1)) {
 							becauseData.allPosts.push(data.statuses[i].text);
 						}
 					}
