@@ -11,6 +11,9 @@ var t = new Twit({
   access_token_secret:  process.env.WHYBECAUSE_TWIT_ACCESS_TOKEN_SECRET
 });
 
+// Extend Wordfilter
+wordfilter.addWords(['nigg', 'n!gg', 'sjw', 'social justice', 'pussies', 'semen']);
+
 getPublicTweetWhy = function(cb) {
 	console.log('--Why');
 	t.get('search/tweets', {q: '\"Why%20is\"', count: 200, result_type: 'recent', lang: 'en'}, function(err, data, response) {
